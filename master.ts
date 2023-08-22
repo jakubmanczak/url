@@ -22,10 +22,10 @@ db.close();
 
 app.addEventListener("listen", () => console.log("Running."));
 
-r.get("/", (ctx) => {
-  ctx.response.body = "GET a specific path to get started!";
+r.get("/", async (ctx) => {
+  await ctx.send({ root: Deno.cwd(), path: "./front/index.html" });
 });
-r.get("/:id", (ctx) => {
+r.get("/:id", async (ctx) => {
   const db = new DB(dbpath);
   const query = db.prepareQuery(`SELECT * FROM urls WHERE id = :id`);
   const res = query.first({ id: ctx.params.id });
@@ -33,7 +33,7 @@ r.get("/:id", (ctx) => {
   db.close();
   if (!res) {
     ctx.response.status = 404;
-    ctx.response.body = `No record found for id ${ctx.params.id}!`;
+    ctx.response.body = `No records found for id ${ctx.params.id}!`;
     return;
   }
   if ((res[1] as number) == 0 /* redirect */) {
@@ -41,6 +41,21 @@ r.get("/:id", (ctx) => {
     ctx.response.redirect(res[2] as string);
   }
   if ((res[1] as number) == 1 /* note */) {
+    await ctx.send({ root: Deno.cwd(), path: "./front/note.html" });
+  }
+});
+
+r.get("/raw/:id", (ctx) => {
+  const db = new DB(dbpath);
+  const query = db.prepareQuery(`SELECT * FROM urls WHERE id = :id`);
+  const res = query.first({ id: ctx.params.id });
+  query.finalize();
+  db.close();
+  if (!res) {
+    ctx.response.status = 404;
+    ctx.response.body = `No records found for id ${ctx.params.id}!`;
+    return;
+  } else {
     ctx.response.body = res[2] as string;
   }
 });

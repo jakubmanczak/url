@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>...</title>
+</head>
+<body>
+    <h1 id="header">...</h1>
+    <p id="note">...</p>
+    <script>
+        const url = new URL(window.location);
+        const id = url.pathname.replace("/","");
+        document.querySelector("#header").textContent = id;
+        document.title = id;
+        fetch(`${url.origin}/raw${url.pathname}`).then(res => {
+            return res.text()
+        }).then(res => {
+            document.querySelector("#note").textContent = res;
+        })
+    </script>
+</body>
+</html>
