@@ -23,26 +23,26 @@ db.close();
 app.addEventListener("listen", () => console.log("Running."));
 
 r.get("/", (ctx) => {
-	ctx.response.body = "GET a specific path to get started!";
+  ctx.response.body = "GET a specific path to get started!";
 });
 r.get("/:id", (ctx) => {
-	const db = new DB(dbpath);
-	const query = db.prepareQuery(`SELECT * FROM urls WHERE id = :id`);
-	const res = query.first({ id: ctx.params.id });
-	query.finalize();
-	db.close();
-	if (!res) {
-		ctx.response.status = 404;
-		ctx.response.body = `No record found for id ${ctx.params.id}!`;
-		return;
-	}
-	if ((res[1] as number) == 0 /* redirect */) {
-		ctx.response.status = 307;
-		ctx.response.redirect(res[2] as string);
-	}
-	if ((res[1] as number) == 1 /* note */) {
-		ctx.response.body = res[2] as string;
-	}
+  const db = new DB(dbpath);
+  const query = db.prepareQuery(`SELECT * FROM urls WHERE id = :id`);
+  const res = query.first({ id: ctx.params.id });
+  query.finalize();
+  db.close();
+  if (!res) {
+    ctx.response.status = 404;
+    ctx.response.body = `No record found for id ${ctx.params.id}!`;
+    return;
+  }
+  if ((res[1] as number) == 0 /* redirect */) {
+    ctx.response.status = 307;
+    ctx.response.redirect(res[2] as string);
+  }
+  if ((res[1] as number) == 1 /* note */) {
+    ctx.response.body = res[2] as string;
+  }
 });
 
 app.use(oakCors());
