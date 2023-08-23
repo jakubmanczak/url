@@ -25,6 +25,10 @@ app.addEventListener("listen", () => console.log("Running."));
 r.get("/", async (ctx) => {
   await ctx.send({ root: Deno.cwd(), path: "./front/index.html" });
 });
+r.get("/style.css", async (ctx) => {
+  await ctx.send({ root: Deno.cwd(), path: "./front/style.css" });
+});
+
 r.get("/:id", async (ctx) => {
   const db = new DB(dbpath);
   const query = db.prepareQuery(`SELECT * FROM urls WHERE id = :id`);
