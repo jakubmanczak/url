@@ -21,11 +21,13 @@ section {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(32px);
   border-radius: 16px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
 }
 @media screen and (max-width: 500px) {
   section {
-    max-width: 95%;
+    max-width: 100%;
     padding: 1rem;
+    margin: auto 1rem;
   }
 }
 h1 {
