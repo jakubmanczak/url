@@ -13,6 +13,10 @@
       <article>
         <p id="note">...</p>
       </article>
+      <p class="muted mt-2">
+        <a id="rawbtn" href="#">raw</a>
+        <!-- <a id="lnkbtn" href="#">link</a> -->
+      </p>
     </section>
     <script>
       const url = new URL(window.location);
@@ -21,7 +25,14 @@
       document.querySelector("#subheading").textContent = url.href
         .replace("http://", "")
         .replace("https://", "");
+      document
+        .querySelector("#rawbtn")
+        .setAttribute("href", `${url.origin}/raw${url.pathname}`);
       document.title = id;
+
+      // document.querySelector("#lnkbtn").addEventListener("click", () => {
+      // navigator.clipboard.writeText("aa");
+      // });
 
       fetch(`${url.origin}/raw${url.pathname}`)
         .then((res) => {
